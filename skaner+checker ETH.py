@@ -1,8 +1,7 @@
 import os
 import aiofiles
 import asyncio
-import hashlib
-import time  # Добавлено для работы с временем
+import time 
 from multiprocessing import Manager, Process
 import pyfiglet
 from termcolor import colored
