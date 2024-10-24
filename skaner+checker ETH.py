@@ -1,7 +1,7 @@
 import os
 import aiofiles
 import asyncio
-import time 
+import time
 from multiprocessing import Manager, Process
 import pyfiglet
 from termcolor import colored
@@ -146,13 +146,17 @@ if __name__ == '__main__':
         "2. Низкая энтропия: Генерация приватного ключа с использованием случайных байтов (16 байт).\n"
     )
     print(colored(description_text, 'cyan'))
-    
+
     # Выбор метода генерации через ввод цифры
     choice = input(colored("Введите номер метода (1 или 2): ", 'cyan')).strip()
     method = 'high' if choice == '1' else 'low' if choice == '2' else 'high'
 
-    # Указываем количество рабочих процессов (по умолчанию 6)
-    num_workers = os.cpu_count() or 6
+    # Указываем максимальную загрузку ЦП
+    max_cpu_load = input(colored("Введите максимальную загрузку ЦП (например, 0.75 для 75%): ", 'cyan')).strip()
+    max_cpu_load = float(max_cpu_load) if max_cpu_load else 0.75  # Устанавливаем значение по умолчанию 75%
+
+    # Вычисляем количество рабочих процессов в зависимости от максимальной загрузки ЦП
+    num_workers = max(1, int(os.cpu_count() * max_cpu_load))
 
     # Запускаем главную асинхронную функцию
     asyncio.run(main(num_workers, method))
